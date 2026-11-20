@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ THÔNG BÁO KHẨN CẤP DÀNH CHO BẠN!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1f1c2c, #0a0813);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 75, 75, 0.4);
+            border-radius: 20px;
+            padding: 35px 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 35px rgba(255, 50, 50, 0.25);
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff0844, #ffb199);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #ff4d4d;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+        }
+
+        p.warning {
+            font-size: 15px;
+            color: #ddd;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #ffe600;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Nút mồi siêu kích thích */
+        .bait-btn {
+            padding: 18px 36px;
+            font-size: 19px;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(45deg, #ff0844 0%, #ff4e50 50%, #f9d423 100%);
+            background-size: 200% auto;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 8, 68, 0.6), 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: glow 2s ease infinite alternate, wiggle 3s infinite ease-in-out;
+            outline: none;
+        }
+
+        .bait-btn:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 0 35px rgba(255, 230, 0, 0.8), 0 8px 25px rgba(0, 0, 0, 0.6);
+            background-position: right center;
+        }
+
+        .bait-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Vùng kết quả troll */
+        .reveal-box {
+            margin-top: 25px;
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .reveal-box h2 {
+            font-size: 28px;
+            color: #ffe600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 230, 0, 0.8);
+        }
+
+        .troll-img {
+            width: 100%;
+            max-width: 420px;
+            border-radius: 16px;
+            border: 4px solid #ffe600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .footer-note {
+            font-size: 13px;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px #ff0844; }
+            100% { box-shadow: 0 0 35px #ffe600; }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-3deg); }
+            40% { transform: rotate(3deg); }
+            60% { transform: rotate(-2deg); }
+            80% { transform: rotate(2deg); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <span class="badge">🔥 BẢO MẬT CẤP ĐỘ CAO (18+)</span>
+        <h1>⚠️ CẢNH BÁO BÍ MẬT</h1>
+        <p class="warning">
+            Hình ảnh bí mật bị rò rỉ của <span class="highlight">người xinh đẹp / đẹp trai nhất quả đất</span> vừa được phát hiện.<br>
+            <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC BẤM</strong> nếu bạn chưa sẵn sàng tâm lý!
+        </p>
+
+        <!-- Nút mồi giật gân -->
+        <button id="baitBtn" class="bait-btn">
+            🔞 BẤM VÀO ĐÂY ĐỂ XEM NGAY 🔞
+        </button>
+
+        <!-- Khu vực lộ diện khi bấm -->
+        <div id="revealBox" class="reveal-box">
+            <h2>🤡 ĐỊT MẸ THẰNG LÙN! 🤡</h2>
+            <img class="troll-img" 
+                 src="Gorilla_Middle_Finger.jpg" 
+                 alt="Troll meme">
+            <p class="footer-note">Ai biểu tò mò chi cho bị lừa nè! 🤣</p>
+        </div>
+    </div>
+
+    <script>
+        const baitBtn = document.getElementById('baitBtn');
+        const revealBox = document.getElementById('revealBox');
+
+        baitBtn.addEventListener('click', () => {
+            if (revealBox.style.display === 'block') {
+                revealBox.style.display = 'none';
+                baitBtn.innerHTML = '🔞 BẤM VÀO ĐÂY ĐỂ XEM NGAY 🔞';
+            } else {
+                revealBox.style.display = 'block';
+                baitBtn.innerHTML = '🤣 BẤM ĐỂ GIẤU MẶT ĐI (QUÊ QUÁ)';
+                
+                // Cuộn xuống để xem trọn vẹn cú lừa
+                revealBox.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
