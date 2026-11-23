@@ -3,196 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚠️ THÔNG BÁO KHẨN CẤP DÀNH CHO BẠN!</title>
+    <title>THÌ...</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050508;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            background: radial-gradient(circle at center, #1f1c2c, #0a0813);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            overflow-x: hidden;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 75, 75, 0.4);
-            border-radius: 20px;
-            padding: 35px 25px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 0 35px rgba(255, 50, 50, 0.25);
+        /* Container chứa chữ */
+        #text-container {
             position: relative;
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
         }
 
-        .badge {
+        .main-text {
+            font-size: clamp(4rem, 15vw, 11rem);
+            font-weight: 900;
+            letter-spacing: 4px;
             display: inline-block;
-            background: linear-gradient(45deg, #ff0844, #ffb199);
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 20px;
+            will-change: transform, opacity, filter;
+        }
+
+        /* Hướng dẫn mờ bên dưới */
+        #hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 14px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            animation: pulse 1.5s infinite;
-            margin-bottom: 15px;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            animation: pulseHint 2s infinite ease-in-out;
         }
 
-        h1 {
-            font-size: 24px;
-            color: #ff4d4d;
-            margin-bottom: 12px;
-            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
         }
 
-        p.warning {
-            font-size: 15px;
-            color: #ddd;
-            margin-bottom: 25px;
-            line-height: 1.5;
+        /* ------------------------------------------------
+           ANIMATION 1: Zoom từ xa vào, mờ ảo tỏa sáng (Cinematic Blur Reveal)
+           ------------------------------------------------ */
+        .anim-1 {
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 50px rgba(99, 102, 241, 0.6);
+            animation: intro1 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .highlight {
-            color: #ffe600;
-            font-weight: bold;
-            text-decoration: underline;
+        @keyframes intro1 {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(40px);
+                filter: blur(25px);
+            }
+            70% {
+                opacity: 1;
+                filter: blur(0px);
+                transform: scale(1.08) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0px);
+                transform: scale(1) translateY(0);
+            }
         }
 
-        /* Nút mồi siêu kích thích */
-        .bait-btn {
-            padding: 18px 36px;
-            font-size: 19px;
-            font-weight: 800;
-            color: #fff;
-            background: linear-gradient(45deg, #ff0844 0%, #ff4e50 50%, #f9d423 100%);
-            background-size: 200% auto;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 8, 68, 0.6), 0 5px 15px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: glow 2s ease infinite alternate, wiggle 3s infinite ease-in-out;
-            outline: none;
+        /* ------------------------------------------------
+           ANIMATION 2: Bổ từ trên xuống rung chấn (Slam & Earthquake Bounce)
+           ------------------------------------------------ */
+        .anim-2 {
+            color: #ff3366;
+            text-shadow: 0 0 25px rgba(255, 51, 102, 0.9), 0 0 60px rgba(255, 0, 76, 0.6);
+            animation: intro2 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, shake2 0.4s 0.35s ease-in-out;
         }
 
-        .bait-btn:hover {
-            transform: scale(1.08) translateY(-3px);
-            box-shadow: 0 0 35px rgba(255, 230, 0, 0.8), 0 8px 25px rgba(0, 0, 0, 0.6);
-            background-position: right center;
+        @keyframes intro2 {
+            0% {
+                opacity: 0;
+                transform: translateY(-200px) scale(1.8) rotate(-8deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(15px) scale(0.9) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
         }
 
-        .bait-btn:active {
-            transform: scale(0.96);
+        @keyframes shake2 {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-15px, 8px) rotate(-3deg); }
+            40% { transform: translate(12px, -10px) rotate(3deg); }
+            60% { transform: translate(-8px, -4px) rotate(-1deg); }
+            80% { transform: translate(6px, 5px) rotate(1deg); }
         }
 
-        /* Vùng kết quả troll */
-        .reveal-box {
-            margin-top: 25px;
+        /* ------------------------------------------------
+           ANIMATION 3: Xoay lật 3D bùng nổ sắc màu (3D Flip & Shockwave)
+           ------------------------------------------------ */
+        .anim-3 {
+            color: #00f2fe;
+            text-shadow: 0 0 30px #00f2fe, 0 0 60px #4facfe, 3px 3px 0px #ff0055;
+            animation: intro3 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            perspective: 800px;
+        }
+
+        @keyframes intro3 {
+            0% {
+                opacity: 0;
+                transform: scale(0.1) rotateX(90deg) rotateY(-45deg);
+                filter: brightness(3);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.25) rotateX(-15deg) rotateY(10deg);
+                filter: brightness(1.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg) rotateY(0deg);
+                filter: brightness(1);
+            }
+        }
+
+        /* ------------------------------------------------
+           ANIMATION 4: Hồi hộp giật cục rung rẩy (Suspense Glitch & Tremor)
+           ------------------------------------------------ */
+        .anim-4 {
+            color: #ffd700;
+            text-shadow: -4px 0 #ff0055, 4px 0 #00ffff, 0 0 35px rgba(255, 215, 0, 0.8);
+            animation: intro4 0.4s ease-out forwards, tremor 0.08s infinite alternate 0.3s;
+        }
+
+        @keyframes intro4 {
+            0% {
+                opacity: 0;
+                transform: scale(3.5);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(0.85);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes tremor {
+            0% { transform: translate(-3px, 2px) skewX(2deg); }
+            50% { transform: translate(3px, -2px) skewX(-2deg); }
+            100% { transform: translate(-2px, -3px) skewX(0deg); }
+        }
+
+        /* ------------------------------------------------
+           Ảnh Full Màn Hình (HightCat.jpg)
+           ------------------------------------------------ */
+        #cat-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 9999;
             display: none;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        .reveal-box h2 {
-            font-size: 28px;
-            color: #ffe600;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 230, 0, 0.8);
+        #cat-screen.active {
+            display: block;
+            animation: catBurst 0.35s cubic-bezier(0.15, 0.9, 0.3, 1.2) forwards;
         }
 
-        .troll-img {
-            width: 100%;
-            max-width: 420px;
-            border-radius: 16px;
-            border: 4px solid #ffe600;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        @keyframes catBurst {
+            0% {
+                opacity: 0;
+                transform: scale(1.35);
+                filter: contrast(2) brightness(1.5);
+            }
+            50% {
+                opacity: 1;
+                filter: contrast(1.2) brightness(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: none;
+            }
         }
 
-        .footer-note {
-            font-size: 13px;
-            color: #888;
-            margin-top: 15px;
-            font-style: italic;
+        /* Hiệu ứng chớp sáng màn hình khi hiện ảnh */
+        #flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.07); }
-            100% { transform: scale(1); }
+        #flash-overlay.flash {
+            animation: flashAnim 0.4s ease-out forwards;
         }
 
-        @keyframes glow {
-            0% { box-shadow: 0 0 20px #ff0844; }
-            100% { box-shadow: 0 0 35px #ffe600; }
-        }
-
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(-3deg); }
-            40% { transform: rotate(3deg); }
-            60% { transform: rotate(-2deg); }
-            80% { transform: rotate(2deg); }
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes flashAnim {
+            0% { opacity: 0.9; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <span class="badge">🔥 BẢO MẬT CẤP ĐỘ CAO (18+)</span>
-        <h1>⚠️ CẢNH BÁO BÍ MẬT</h1>
-        <p class="warning">
-            Hình ảnh bí mật bị rò rỉ của <span class="highlight">người xinh đẹp / đẹp trai nhất quả đất</span> vừa được phát hiện.<br>
-            <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC BẤM</strong> nếu bạn chưa sẵn sàng tâm lý!
-        </p>
-
-        <!-- Nút mồi giật gân -->
-        <button id="baitBtn" class="bait-btn">
-            🔞 BẤM VÀO ĐÂY ĐỂ XEM NGAY 🔞
-        </button>
-
-        <!-- Khu vực lộ diện khi bấm -->
-        <div id="revealBox" class="reveal-box">
-            <h2>🤡 ĐỊT MẸ THẰNG LÙN! 🤡</h2>
-            <img class="troll-img" 
-                 src="Gorilla_Middle_Finger.jpg" 
-                 alt="Troll meme">
-            <p class="footer-note">© Make by Claude</p>
-        </div>
+    <div id="text-container">
+        <h1 id="title" class="main-text anim-1">THÌ...</h1>
     </div>
 
-    <script>
-        const baitBtn = document.getElementById('baitBtn');
-        const revealBox = document.getElementById('revealBox');
+    <div id="hint">Nhấp chuột bất kỳ đâu</div>
 
-        baitBtn.addEventListener('click', () => {
-            if (revealBox.style.display === 'block') {
-                revealBox.style.display = 'none';
-                baitBtn.innerHTML = '🔞 BẤM VÀO ĐÂY ĐỂ XEM NGAY 🔞';
-            } else {
-                revealBox.style.display = 'block';
-                baitBtn.innerHTML = '🤣 BẤM ĐỂ GIẤU MẶT ĐI (QUÊ QUÁ)';
-                
-                // Cuộn xuống để xem trọn vẹn cú lừa
-                revealBox.scrollIntoView({ behavior: 'smooth' });
+    <!-- Ảnh mèo HighCat full màn hình -->
+    <img id="cat-screen" src="HightCat.jpg" alt="HightCat">
+    <div id="flash-overlay"></div>
+
+    <script>
+        // Các bước kịch bản:
+        // Bước 0 (Mở web): "THÌ..." với anim-1
+        // Bước 1 (Click lần 1): "THÌ..." với anim-2
+        // Bước 2 (Click lần 2): "THÌ..." với anim-3
+        // Bước 3 (Click lần 3): "TH..." với anim-4 -> sau 1s hiện ảnh full màn hình
+
+        const steps = [
+            { text: "THÌ...", anim: "anim-1" },
+            { text: "THÌ...", anim: "anim-2" },
+            { text: "THÌ...", anim: "anim-3" },
+            { text: "TH...", anim: "anim-4", final: true }
+        ];
+
+        let currentStep = 0;
+        let isLocked = false;
+
+        const title = document.getElementById('title');
+        const hint = document.getElementById('hint');
+        const catScreen = document.getElementById('cat-screen');
+        const flashOverlay = document.getElementById('flash-overlay');
+
+        function triggerStep(stepIndex) {
+            const data = steps[stepIndex];
+
+            // Xóa animation cũ và ép trình duyệt tính toán lại (reflow)
+            title.className = "main-text";
+            void title.offsetWidth;
+
+            // Đặt text và animation mới
+            title.textContent = data.text;
+            title.classList.add(data.anim);
+
+            // Nếu đến bước "TH..." cuối cùng
+            if (data.final) {
+                isLocked = true;
+                hint.style.opacity = '0';
+
+                // Sau đúng 1 giây (1000ms) sẽ hiện ảnh HightCat.jpg full màn hình
+                setTimeout(() => {
+                    flashOverlay.classList.add('flash');
+                    catScreen.classList.add('active');
+                }, 1000);
+            }
+        }
+
+        // Bắt sự kiện click bất kỳ đâu trên màn hình
+        window.addEventListener('click', () => {
+            if (isLocked) return;
+
+            currentStep++;
+            if (currentStep < steps.length) {
+                triggerStep(currentStep);
             }
         });
     </script>
