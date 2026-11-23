@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THÌ...</title>
     <style>
         * {
@@ -11,11 +11,15 @@
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body, html {
             width: 100%;
             height: 100%;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             background-color: #050508;
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
@@ -23,6 +27,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
+        }
+
+        /* Lớp cảm ứng trong suốt phủ toàn màn hình bắt mọi cú chạm/click */
+        #tap-target {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 50;
+            cursor: pointer;
+            touch-action: manipulation;
         }
 
         /* Container chứa chữ */
@@ -34,9 +52,9 @@
         }
 
         .main-text {
-            font-size: clamp(4rem, 15vw, 11rem);
+            font-size: clamp(3.5rem, 16vw, 11rem);
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             display: inline-block;
             will-change: transform, opacity, filter;
         }
@@ -47,18 +65,21 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.45);
             font-size: 14px;
             letter-spacing: 1px;
             text-transform: uppercase;
             pointer-events: none;
             transition: opacity 0.5s ease;
             animation: pulseHint 2s infinite ease-in-out;
+            z-index: 20;
+            width: 90%;
+            text-align: center;
         }
 
         @keyframes pulseHint {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.6; }
+            0%, 100% { opacity: 0.25; }
+            50% { opacity: 0.75; }
         }
 
         /* ------------------------------------------------
@@ -189,6 +210,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             object-fit: cover;
             z-index: 9999;
             display: none;
@@ -225,6 +247,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             background: white;
             z-index: 10000;
             opacity: 0;
@@ -243,23 +266,20 @@
 </head>
 <body>
 
+    <!-- Lớp nhận diện chạm/click cho cả mobile và máy tính -->
+    <div id="tap-target"></div>
+
     <div id="text-container">
         <h1 id="title" class="main-text anim-1">THÌ...</h1>
     </div>
 
-    <div id="hint">Nhấp chuột bất kỳ đâu</div>
+    <div id="hint">Chạm vào màn hình để tiếp tục</div>
 
     <!-- Ảnh mèo HighCat full màn hình -->
     <img id="cat-screen" src="HightCat.jpg" alt="HightCat">
     <div id="flash-overlay"></div>
 
     <script>
-        // Các bước kịch bản:
-        // Bước 0 (Mở web): "THÌ..." với anim-1
-        // Bước 1 (Click lần 1): "THÌ..." với anim-2
-        // Bước 2 (Click lần 2): "THÌ..." với anim-3
-        // Bước 3 (Click lần 3): "TH..." với anim-4 -> sau 1s hiện ảnh full màn hình
-
         const steps = [
             { text: "THÌ...", anim: "anim-1" },
             { text: "THÌ...", anim: "anim-2" },
@@ -269,16 +289,18 @@
 
         let currentStep = 0;
         let isLocked = false;
+        let lastTapTime = 0;
 
         const title = document.getElementById('title');
         const hint = document.getElementById('hint');
         const catScreen = document.getElementById('cat-screen');
         const flashOverlay = document.getElementById('flash-overlay');
+        const tapTarget = document.getElementById('tap-target');
 
         function triggerStep(stepIndex) {
             const data = steps[stepIndex];
 
-            // Xóa animation cũ và ép trình duyệt tính toán lại (reflow)
+            // Xóa animation cũ và ép tính toán lại reflow
             title.className = "main-text";
             void title.offsetWidth;
 
@@ -286,12 +308,12 @@
             title.textContent = data.text;
             title.classList.add(data.anim);
 
-            // Nếu đến bước "TH..." cuối cùng
             if (data.final) {
                 isLocked = true;
                 hint.style.opacity = '0';
+                tapTarget.style.display = 'none';
 
-                // Sau đúng 1 giây (1000ms) sẽ hiện ảnh HightCat.jpg full màn hình
+                // Sau 1s hiện ảnh full màn hình
                 setTimeout(() => {
                     flashOverlay.classList.add('flash');
                     catScreen.classList.add('active');
@@ -299,15 +321,30 @@
             }
         }
 
-        // Bắt sự kiện click bất kỳ đâu trên màn hình
-        window.addEventListener('click', () => {
+        // Hàm xử lý tương tác (hỗ trợ cả chạm mobile và chuột máy tính)
+        function handleInteraction(e) {
             if (isLocked) return;
+
+            // Ngăn chặn kích hoạt kép giữa pointerdown/touchstart và click
+            const now = Date.now();
+            if (now - lastTapTime < 300) return;
+            lastTapTime = now;
+
+            if (e && e.cancelable && e.type !== 'pointerdown') {
+                e.preventDefault();
+            }
 
             currentStep++;
             if (currentStep < steps.length) {
                 triggerStep(currentStep);
             }
-        });
+        }
+
+        // Bắt mọi loại sự kiện chạm trên mobile và click trên máy tính
+        tapTarget.addEventListener('pointerdown', handleInteraction);
+        tapTarget.addEventListener('touchstart', handleInteraction, { passive: false });
+        tapTarget.addEventListener('click', handleInteraction);
+        window.addEventListener('click', handleInteraction);
     </script>
 </body>
 </html>
